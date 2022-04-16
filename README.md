@@ -1,5 +1,7 @@
 # LogColors
 
+String generator for colored text formation
+
 How to use variant 1
 ```cpp
 #include <LogColors.hpp>
@@ -47,7 +49,7 @@ Number	| Value		 | Description
 3		| ANY		 | Color or Formation name
 In code:
 ```cpp
-#include <Colors.hpp>
+#include <Colors.hpp> /* Colors.hpp used LogColors.hpp */
 namespace LC = SCT::LogColors;
 
 // Use foreground color
@@ -78,12 +80,22 @@ std::cout << LC::color(TFG_BrightBLUE, TBG_YELLOW, TFORM_BOLD)
 std::cout << LC::color();
 ```
 ---
-For don't usage ``SCT::LogColors::ANY``
+Additionally, you can use std::string
+```cpp
+#include <Colors.hpp> /* Colors.hpp used LogColors.hpp */
+namespace LC = SCT::LogColors;
+
+std::string str = LC::color(TBG_YELLOW, TFORM_BOLD) + "Bold Yellow text" + LC::color();
+
+std::cout << str << '\n';
+```
+---
+To not use ``SCT::LogColors::ANY``
 ```cpp
 #define USE_SCT_LC
 #include <LogColors.hpp>
 // Or
-#include <Colors.hpp>
+#include <Colors.hpp> /* Colors.hpp used LogColors.hpp */
 
 std::cout << LC::color();
 ```
@@ -92,7 +104,7 @@ or
 #define USE_SCT_LOGCOLORS
 #include <LogColors.hpp>
 // Or
-#include <Colors.hpp>
+#include <Colors.hpp> /* Colors.hpp used LogColors.hpp */
 
 std::cout << LogColors::color();
 ```
