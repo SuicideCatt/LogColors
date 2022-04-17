@@ -17,7 +17,7 @@ namespace SCT::LogColors
 
 		enum class Formation : short int
 		{
-			Bold = 1, 		SemiBright,
+			Bold = 1, 		Dim,
 			Italic,			Underline,
 			Blink,			Reversion = 7,
 			Conceal,		Strikethrough

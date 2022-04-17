@@ -58,7 +58,7 @@
 
 // Text formation
 #define TFORM_BOLD			GEN_TFORM(Bold)
-#define TFORM_SEMI_BRIGHT	GEN_TFORM(SemiBright)
+#define TFORM_Dim			GEN_TFORM(Dim)
 #define TFORM_ITALIC		GEN_TFORM(Italic)
 #define TFORM_UNDERLINE		GEN_TFORM(Underline)
 #define TFORM_BLINK			GEN_TFORM(Blink)
