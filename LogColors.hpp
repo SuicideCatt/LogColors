@@ -9,23 +9,23 @@ namespace SCT::LogColors
 	{
 		enum class Color : short int
 		{
-			Black = 30,		Red,
-			Green,			Yellow,
-			Blue,			Magenta,
-			Cyan,			LigftGray,
+			black = 30,		red,
+			green,			yellow,
+			blue,			magenta,
+			cyan,			ligftGray,
 
-			DarkGray = 90,	LightRed,
-			LightGreen,		LightYellow,
-			LightBlue,		LightMagenta,
-			LightCyan,		White,			
+			darkGray = 90,	lightRed,
+			lightGreen,		lightYellow,
+			lightBlue,		lightMagenta,
+			lightCyan,		white,			
 		};
 
 		enum class Formation : short int
 		{
-			Bold = 1, 		Dim,
-			Italic,			Underline,
-			Blink,			Reversion = 7,
-			Conceal,		Strikethrough
+			bold = 1, 		dim,
+			italic,			underline,
+			blink,			reversion = 7,
+			conceal,		strikethrough
 		};
 
 		enum Reset

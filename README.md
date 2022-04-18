@@ -8,28 +8,28 @@ How to use variant 1
 namespace LC = SCT::LogColors;
 
 // Use foreground color
-std::cout << LC::color(LC::fg(LC::Color::Yellow))
+std::cout << LC::color(LC::fg(LC::Color::yellow))
 		  << "Test text\n";
 
 // Use background color
-std::cout << LC::color(LC::bg(LC::Color::Yellow))
+std::cout << LC::color(LC::bg(LC::Color::yellow))
 		  << "Test text\n";
 
 // Use light foreground color
-std::cout << LC::color(LC::fg(LC::Color::LightYellow))
+std::cout << LC::color(LC::fg(LC::Color::lightYellow))
 		  << "Test text\n";
 
 // Use light background color
-std::cout << LC::color(LC::bg(LC::Color::LightYellow))
+std::cout << LC::color(LC::bg(LC::Color::lightYellow))
 		  << "Test text\n";
 
 // Use formation text
-std::cout << LC::color(LC::Formation::Bold)
+std::cout << LC::color(LC::Formation::bold)
 		  << "Test text\n";
 
 // Use all
-std::cout << LC::color(LC::fg(LC::Color::LightBlue), 
-			 LC::bg(LC::Color::Yellow), LC::Formation::Bold)
+std::cout << LC::color(LC::fg(LC::Color::lightBlue), 
+			 LC::bg(LC::Color::yellow), LC::Formation::bold)
 		  << "Test text\n";
 
 // Reset
