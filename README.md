@@ -49,6 +49,7 @@ Number	| Value		 | Description
 1		| T			 | Terminal 
 2		| FG/BG/FORM | Foreground/Background/Formation
 3		| ANY		 | Color or Formation name
+
 In code:
 ```cpp
 #include <Colors.hpp> /* Colors.hpp used LogColors.hpp */
