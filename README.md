@@ -15,12 +15,12 @@ std::cout << LC::color(LC::fg(LC::Color::Yellow))
 std::cout << LC::color(LC::bg(LC::Color::Yellow))
 		  << "Test text\n";
 
-// Use bright foreground color
-std::cout << LC::color(LC::fg(LC::Color::Yellow, true))
+// Use light foreground color
+std::cout << LC::color(LC::fg(LC::Color::LightYellow))
 		  << "Test text\n";
 
-// Use bright background color
-std::cout << LC::color(LC::bg(LC::Color::Yellow, true))
+// Use light background color
+std::cout << LC::color(LC::bg(LC::Color::LightYellow))
 		  << "Test text\n";
 
 // Use formation text
@@ -28,12 +28,14 @@ std::cout << LC::color(LC::Formation::Bold)
 		  << "Test text\n";
 
 // Use all
-std::cout << LC::color(LC::fg(LC::Color::Blue, true), 
+std::cout << LC::color(LC::fg(LC::Color::LightBlue), 
 			 LC::bg(LC::Color::Yellow), LC::Formation::Bold)
 		  << "Test text\n";
 
 // Reset
 std::cout << LC::color();
+// Or
+std::cout << LC::reset;
 ```
 ---
 How to use variant 2 (**DEFINED**)
@@ -60,12 +62,12 @@ std::cout << LC::color(TFG_YELLOW)
 std::cout << LC::color(TBG_YELLOW)
 		  << "Test text\n";
 
-// Use bright foreground color
-std::cout << LC::color(TFG_BrightYELLOW)
+// Use light foreground color
+std::cout << LC::color(TFG_LightYELLOW)
 		  << "Test text\n";
 
-// Use bright background color
-std::cout << LC::color(TBG_BrightYELLOW)
+// Use light background color
+std::cout << LC::color(TBG_LightYELLOW)
 		  << "Test text\n";
 
 // Use formation text
@@ -73,11 +75,13 @@ std::cout << LC::color(TFORM_BOLD)
 		  << "Test text\n";
 
 // Use all
-std::cout << LC::color(TFG_BrightBLUE, TBG_YELLOW, TFORM_BOLD)
+std::cout << LC::color(TFG_LightBLUE, TBG_YELLOW, TFORM_BOLD)
 		  << "Test text\n";
 
 // Reset
 std::cout << LC::color();
+// Or
+std::cout << LC::reset;
 ```
 ---
 Additionally, you can use std::string
