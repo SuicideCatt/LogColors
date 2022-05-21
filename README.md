@@ -1,7 +1,6 @@
 # LogColors
 
-String generator for colored text formation
-Work on Windows10+ and Linux
+Formated text generator for ostream. Works on Windows10+ and Linux.
 
 How to use variant 1
 ```cpp
@@ -31,7 +30,7 @@ std::cout << LC::fg::lightBlue << LC::bg::yellow << LC::form::bold
 std::cout << LC::off;
 ```
 ---
-How to use variant 2. Save color and formation configuration
+How to use variant 2 (Save color and formation configuration)
 ```cpp
 #include <LogColors.hpp>
 namespace LC = SCT::LogColors;
