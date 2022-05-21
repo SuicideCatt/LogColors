@@ -1,6 +1,6 @@
 # LogColors
 
-Formated text generator for ostream. Works on Windows10+ and Linux.
+Formated text generator for std::ostream. Works on Windows10+ and Linux.
 
 How to use variant 1
 ```cpp
