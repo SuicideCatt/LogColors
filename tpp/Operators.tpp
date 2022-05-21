@@ -79,10 +79,15 @@ namespace SCT::LogColors::Operators
 		return col;
 	}
 
+	inline std::ostream& operator <<(std::ostream& out, Terminal::Delete p)
+	{
+		return out << "\033[0m";
+	}
+
 	template<typename CurMode, enableIfIsMode(CurMode)>
 	inline std::ostream& operator <<(CurMode&& col, Terminal::Delete p)
 	{
-		return col.out << "\033[0m";
+		return col.out << p;
 	}
 
 	template<typename Type, enableIfIsColorOrForm(Type)>
