@@ -1,6 +1,11 @@
 # LogColors
 
-String generator for colored text formation
+String generator for colored text formation. Works on Windows10+ and Linux.
+
+How to download
+```bash
+$ git clone -b old https://github.com/SuicideCatt/LogColors.git
+```
 
 How to use variant 1
 ```cpp
