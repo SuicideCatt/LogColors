@@ -52,6 +52,25 @@ conf << "\nBold, Text: " << 5 << LC::reset;
 conf << "\nText: " << 6 << '\n' << LC::off;
 ```
 ---
+Use 256 colors
+```cpp
+#include <LogColors.hpp>
+namespace LC = SCT::LogColors;
+
+// Use foreground color
+std::cout << LC::fg::_256{120} << "Test text" << LC::off << '\n';
+
+// Use background color
+std::cout << LC::bg::_256{120} << "Test text" << LC::off << '\n';
+
+// Use all
+std::cout << LC::fg::_256{120} << LC::bg::_256{4} << LC::form::bold
+		  << "Test text" << LC::off << '\n';
+// Use combinate (16 and 256 color)
+std::cout << LC::fg::_256{120} << LC::bg::yellow << LC::form::bold
+		  << "Test text" << LC::off << '\n';
+```
+---
 To not use ``SCT::LogColors::ANY``
 ```cpp
 #define USE_SCT_LC
