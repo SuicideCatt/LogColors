@@ -2,45 +2,49 @@
 
 namespace SCT::LogColors::Terminal
 {
-	namespace FGColors
+	namespace Templates
 	{
-		enum v : short int
+		template<short int Color, short int Id>
+		struct _16_t
 		{
-			black = 30,		red,
-			green,			yellow,
-			blue,			magenta,
-			cyan,			ligftGray,
-			
-			darkGray = 90,	lightRed,
-			lightGreen,		lightYellow,
-			lightBlue,		lightMagenta,
-			lightCyan,		white,
-			
-			reset = 39,
+			enum _16 : short int
+			{
+				black = Color,				red,
+				green,						yellow,
+				blue,						magenta,
+				cyan,						ligftGray,
+				
+				darkGray = Color + 30,		lightRed,
+				lightGreen,					lightYellow,
+				lightBlue,					lightMagenta,
+				lightCyan,					white,
+				
+				reset = Color + 9,
 
-			id = 0
+				id = Id
+			};
+		};
+
+		template<unsigned char Id>
+		struct _256_t
+		{
+			unsigned char color = 0;
+
+			static const unsigned char id = Id;
+
+			inline operator short int()
+				{ return this->color; }
+		};
+
+		template<short int Color, short int Id>
+		struct Colors : public _16_t<Color, Id>
+		{
+			using _256 = _256_t<Id>;
 		};
 	}
 
-	namespace BGColors
-	{
-		enum v : short int
-		{
-			black = 40,		red,
-			green,			yellow,
-			blue,			magenta,
-			cyan,			ligftGray,
-			
-			darkGray = 100,	lightRed,
-			lightGreen,		lightYellow,
-			lightBlue,		lightMagenta,
-			lightCyan,		white,
-			
-			reset = 49,
-
-			id = 1
-		};
-	}
+	using FGColors = Templates::Colors<30, 0>;
+	using BGColors = Templates::Colors<40, 1>;
 	
 	namespace Formations
 	{

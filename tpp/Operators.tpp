@@ -21,9 +21,19 @@
 #define enableIfIsMode(type) \
 	enableIf(isColorEd(type) || isPrint(type))
 
-#define isForm(type)	isSame(type, form)
-#define isFG(type)		isSame(type, fg)
-#define isBG(type)		isSame(type, bg)
+#define isFG_16(type)	isSame(type, fg::_16)
+#define isBG_16(type)	isSame(type, bg::_16)
+
+#define isFG_256(type)	isSame(type, fg::_256)
+#define isBG_256(type)	isSame(type, bg::_256)
+
+#define is_16(type)		isFG_16(type) || isBG_16(type)
+#define is_256(type)	isFG_256(type) || isBG_256(type)
+
+#define isForm(type)	isSame(type, form::v)
+#define isFG(type)		isFG_16(type) || isFG_256(type)
+#define isBG(type)		isBG_16(type) || isBG_256(type)
+
 #define isReset(type) \
 	isSame(type, Terminal::Reset) || isSame(type, Terminal::Delete)
 
@@ -42,20 +52,24 @@
 #define enableIfIsNotColorOrFormOrReset(type) \
 	enableIf(!(isColorOrForm(type) || isReset(type)))
 
-#define CastShortInt(value) static_cast<short int>(value)
-
 namespace SCT::LogColors::Operators
 {
 	template<typename CurMode, typename Type, 
 		enableIfIsColorEd(CurMode), enableIfIsColor(Type)>
 	inline CurMode operator <<(CurMode&& col, Type p)
 	{
-		col.g[Type::id] = p;
+		if constexpr (is_16(Type))
+			col.mode[Type::id] = std::remove_reference_t<CurMode>::_16;
+		else if constexpr (is_256(Type))
+			col.mode[Type::id] = std::remove_reference_t<CurMode>::_256;
+
+		col.color[Type::id] = p;
+
 		return col;
 	}
 
 	template<typename CurMode, enableIfIsColorEd(CurMode)>
-	inline CurMode operator <<(CurMode&& col, form p)
+	inline CurMode operator <<(CurMode&& col, form::v p)
 	{
 		if (p != form::reset)
 		{
@@ -123,9 +137,15 @@ namespace SCT::LogColors::Operators
 
 		col.invert();
 
-		col.out << col.g[0] << ';'
-				<< col.g[1] << 'm'
-				<< value;
+		if (col.mode[0] == std::remove_reference_t<CurMode>::_256)
+			col.out << "38;5;";
+		col.out << col.color[0] << ';';
+
+		if (col.mode[1] == std::remove_reference_t<CurMode>::_256)
+			col.out << "48;5;";
+		col.out << col.color[1] << 'm';
+
+		col.out << value;
 
 		col.invert();
 
@@ -142,26 +162,33 @@ namespace SCT::LogColors::Operators
 	}
 }
 
-#undef enableIf
-#undef isSame
-
-#undef isColorEd
-#undef isPrint
-
-#undef enableIfIsColorEd
-#undef enableIfIsPrint
-#undef enableIfIsMode
-
-#undef isForm
-#undef isFG
-#undef isBG
-
-#undef isReset
-
-#undef isColor
+#undef enableIfIsNotColorOrFormOrReset
+#undef enableIfIsNotColorOrForm
+#undef enableIfIsColorOrForm
+#undef enableIfIsColor
 #undef isColorOrForm
 
-#undef enableIfIsColor
-#undef enableIfIsColorOrForm
-#undef enableIfIsNotColorOrForm
-#undef enableIfIsNotColorOrFormOrReset
+#undef isColor
+#undef isReset
+
+#undef isBG
+#undef isFG
+#undef isForm
+
+#undef is_256
+#undef is_16
+
+#undef isBG_256
+#undef isFG_256
+#undef isBG_16
+#undef isFG_16
+
+#undef enableIfIsMode
+#undef enableIfIsPrint
+#undef enableIfIsColorEd
+
+#undef isPrint
+#undef isColorEd
+
+#undef isSame
+#undef enableIf
