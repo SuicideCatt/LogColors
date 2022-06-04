@@ -2,6 +2,11 @@
 
 Formated text generator for std::ostream. Works on Windows10+ and Linux.
 
+How to download
+```bash
+$ git clone -b only_16_colors https://github.com/SuicideCatt/LogColors.git
+```
+
 How to use variant 1
 ```cpp
 #include <LogColors.hpp>
