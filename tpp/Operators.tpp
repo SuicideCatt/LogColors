@@ -56,7 +56,7 @@ namespace SCT::LogColors::Operators
 {
 	template<typename CurMode, typename Type, 
 		enableIfIsColorEd(CurMode), enableIfIsColor(Type)>
-	inline CurMode operator <<(CurMode&& col, Type p)
+	inline CurMode operator <<(CurMode&& col, const Type& p)
 	{
 		if constexpr (is_16(Type))
 			col.mode[Type::id] = std::remove_reference_t<CurMode>::_16;
@@ -69,7 +69,7 @@ namespace SCT::LogColors::Operators
 	}
 
 	template<typename CurMode, enableIfIsColorEd(CurMode)>
-	inline CurMode operator <<(CurMode&& col, form::v p)
+	inline CurMode operator <<(CurMode&& col, const form::v& p)
 	{
 		if (p != form::reset)
 		{
@@ -87,25 +87,26 @@ namespace SCT::LogColors::Operators
 	}
 
 	template<typename CurMode, enableIfIsMode(CurMode)>
-	inline CurMode operator <<(CurMode&& col, Terminal::Reset p)
+	inline CurMode operator <<(CurMode&& col, const Terminal::Reset& p)
 	{
 		col.reset();
 		return col;
 	}
 
-	inline std::ostream& operator <<(std::ostream& out, Terminal::Delete p)
+	inline std::ostream&
+		operator <<(std::ostream& out, const Terminal::Delete& p)
 	{
 		return out << "\033[0m";
 	}
 
 	template<typename CurMode, enableIfIsMode(CurMode)>
-	inline std::ostream& operator <<(CurMode&& col, Terminal::Delete p)
+	inline std::ostream& operator <<(CurMode&& col, const Terminal::Delete& p)
 	{
 		return col.out << p;
 	}
 
 	template<typename Type, enableIfIsColorOrForm(Type)>
-	inline Mode::ColorEd operator <<(std::ostream& out, Type p)
+	inline Mode::ColorEd operator <<(std::ostream& out, const Type& p)
 	{
 		Mode::ColorEd col{out};
 		return col << p;
@@ -113,7 +114,7 @@ namespace SCT::LogColors::Operators
 
 	template<typename CurMode, typename Type, 
 		enableIfIsPrint(CurMode), enableIfIsNotColorOrForm(Type)>
-	inline CurMode operator <<(CurMode&& col, Type value)
+	inline CurMode operator <<(CurMode&& col, const Type& value)
 	{
 		col.out << value;
 		return col;
@@ -123,7 +124,7 @@ namespace SCT::LogColors::Operators
 		enableIfIsColorEd(CurMode), enableIfIsNotColorOrFormOrReset(Type)>
 	inline std::conditional_t<std::is_lvalue_reference_v<CurMode>, 
 			Mode::Print&, Mode::Print> 
-		operator <<(CurMode&& col, Type value)
+		operator <<(CurMode&& col, const Type& value)
 	{
 		col.out << "\033[0;";
 

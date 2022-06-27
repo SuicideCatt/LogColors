@@ -48,7 +48,7 @@ namespace SCT::LogColors::Terminal
 	
 	namespace Formations
 	{
-		enum v : short int
+		enum v : char
 		{
 			bold = 0, 		dim,
 			italic,			underline,

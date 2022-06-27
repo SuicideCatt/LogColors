@@ -7,12 +7,13 @@ namespace SCT::LogColors::Mode
 {
     struct ColorEd
 	{
-		enum Mode
+		enum Mode : char
 		{
 			_16, _256
 		};
 
 		std::ostream& out;
+
 		short int color[2] = {39, 49};
 		Mode mode[2] = {_16, _16};
 
