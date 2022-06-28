@@ -157,7 +157,7 @@ namespace SCT::LogColors::Operators
 		enableIfIsPrint(CurMode), enableIfIsColorOrForm(Type)>
 	inline std::conditional_t<std::is_lvalue_reference_v<CurMode>, 
 			Mode::ColorEd&, Mode::ColorEd> 
-		operator <<(CurMode&& col, Type p)
+		operator <<(CurMode&& col, const Type& p)
 	{
 		return reinterpret_cast<Mode::ColorEd&>(col) << p;
 	}
