@@ -2,65 +2,72 @@
 
 #include <ostream>
 #include <type_traits>
+#include <concepts>
 
-#define enableIf(value) std::enable_if_t<value, bool> = true
+namespace SCT::LogColors::Concepts
+{
+	template<typename TypeA, typename TypeB>
+	concept IsSomeMode = std::same_as<std::remove_reference_t<TypeA>, TypeB>;
 
-#define isSame(typeA, typeB) std::is_same_v<typeA, typeB>
+	template<typename Type>
+	concept IsColorEd = IsSomeMode<Type, Mode::ColorEd>;
 
-#define isColorEd(type) \
-	isSame(std::remove_reference_t<type>, Mode::ColorEd)
-#define isPrint(type) \
-	isSame(std::remove_reference_t<type>, Mode::Print)
+	template<typename Type>
+	concept IsPrint = IsSomeMode<Type, Mode::Print>;
+	
+	template<typename Type>
+	concept IsMode = IsColorEd<Type> || IsPrint<Type>;
 
-#define enableIfIsColorEd(type) \
-	enableIf(isColorEd(type))
+	template<typename Type>
+	concept IsFG_16 = std::same_as<Type, fg::_16>;
 
-#define enableIfIsPrint(type) \
-	enableIf(isPrint(type))
+	template<typename Type>
+	concept IsBG_16 = std::same_as<Type, bg::_16>;
 
-#define enableIfIsMode(type) \
-	enableIf(isColorEd(type) || isPrint(type))
+	template<typename Type>
+	concept IsFG_256 = std::same_as<Type, fg::_256>;
 
-#define isFG_16(type)	isSame(type, fg::_16)
-#define isBG_16(type)	isSame(type, bg::_16)
+	template<typename Type>
+	concept IsBG_256 = std::same_as<Type, bg::_256>;
 
-#define isFG_256(type)	isSame(type, fg::_256)
-#define isBG_256(type)	isSame(type, bg::_256)
+	template<typename Type>
+	concept Is_16 = IsFG_16<Type> || IsBG_16<Type>;
 
-#define is_16(type)		isFG_16(type) || isBG_16(type)
-#define is_256(type)	isFG_256(type) || isBG_256(type)
+	template<typename Type>
+	concept Is_256 = IsFG_256<Type> || IsBG_256<Type>;
 
-#define isForm(type)	isSame(type, form::v)
-#define isFG(type)		isFG_16(type) || isFG_256(type)
-#define isBG(type)		isBG_16(type) || isBG_256(type)
+	template<typename Type>
+	concept IsForm = std::same_as<Type, form::v>;
 
-#define isReset(type) \
-	isSame(type, Terminal::Reset) || isSame(type, Terminal::Delete)
+	template<typename Type>
+	concept IsFG = IsFG_16<Type> || IsFG_256<Type>;
 
-#define isColor(type)		isFG(type)		|| isBG(type)
-#define isColorOrForm(type)	isColor(type)	|| isForm(type)
+	template<typename Type>
+	concept IsBG = IsBG_16<Type> || IsBG_256<Type>;
 
-#define enableIfIsColor(type) \
-	enableIf(isColor(type))
+	template<typename Type>
+	concept IsColor = IsFG<Type> || IsBG<Type>;
 
-#define enableIfIsColorOrForm(type) \
-	enableIf(isColorOrForm(type))
+	template<typename Type>
+	concept IsReset = std::same_as<Type, Terminal::Reset::Reset>
+		|| std::same_as<Type, Terminal::Reset::Delete>;
 
-#define enableIfIsNotColorOrForm(type) \
-	enableIf(!(isColorOrForm(type)))
+	template<typename Type>
+	concept IsColorOrForm = IsColor<Type> || IsForm<Type>;
 
-#define enableIfIsNotColorOrFormOrReset(type) \
-	enableIf(!(isColorOrForm(type) || isReset(type)))
+	template<typename Type>
+	concept IsNotColorOrFormOrReset = !(Concepts::IsColorOrForm<Type>
+		|| Concepts::IsReset<Type>);
+}
 
 namespace SCT::LogColors::Operators
 {
-	template<typename CurMode, typename Type, 
-		enableIfIsColorEd(CurMode), enableIfIsColor(Type)>
+	template<Concepts::IsColorEd CurMode, Concepts::IsColor Type>
 	inline CurMode operator <<(CurMode&& col, const Type& p)
 	{
-		if constexpr (is_16(Type))
+		if constexpr (Concepts::Is_16<Type>)
 			col.mode[Type::id] = std::remove_reference_t<CurMode>::_16;
-		else if constexpr (is_256(Type))
+		else if constexpr (Concepts::Is_256<Type>)
 			col.mode[Type::id] = std::remove_reference_t<CurMode>::_256;
 
 		col.color[Type::id] = p;
@@ -68,7 +75,7 @@ namespace SCT::LogColors::Operators
 		return col;
 	}
 
-	template<typename CurMode, enableIfIsColorEd(CurMode)>
+	template<Concepts::IsColorEd CurMode>
 	inline CurMode operator <<(CurMode&& col, const form::v& p)
 	{
 		if (p != form::reset)
@@ -86,42 +93,42 @@ namespace SCT::LogColors::Operators
 		return col;
 	}
 
-	template<typename CurMode, enableIfIsMode(CurMode)>
-	inline CurMode operator <<(CurMode&& col, const Terminal::Reset& p)
+	template<Concepts::IsMode CurMode>
+	inline CurMode operator <<(CurMode&& col, const Terminal::Reset::Reset& p)
 	{
 		col.reset();
 		return col;
 	}
 
 	inline std::ostream&
-		operator <<(std::ostream& out, const Terminal::Delete& p)
+		operator <<(std::ostream& out, const Terminal::Reset::Delete& p)
 	{
 		return out << "\033[0m";
 	}
 
-	template<typename CurMode, enableIfIsMode(CurMode)>
-	inline std::ostream& operator <<(CurMode&& col, const Terminal::Delete& p)
+	template<Concepts::IsMode CurMode>
+	inline std::ostream& operator <<(CurMode&& col,
+		const Terminal::Reset::Delete& p)
 	{
 		return col.out << p;
 	}
 
-	template<typename Type, enableIfIsColorOrForm(Type)>
+	template<Concepts::IsColorOrForm Type>
 	inline Mode::ColorEd operator <<(std::ostream& out, const Type& p)
 	{
 		Mode::ColorEd col{out};
 		return col << p;
 	}
 
-	template<typename CurMode, typename Type, 
-		enableIfIsPrint(CurMode), enableIfIsNotColorOrForm(Type)>
+	template<Concepts::IsPrint CurMode, Concepts::IsNotColorOrFormOrReset Type>
 	inline CurMode operator <<(CurMode&& col, const Type& value)
 	{
 		col.out << value;
 		return col;
 	}
 
-	template<typename CurMode, typename Type, 
-		enableIfIsColorEd(CurMode), enableIfIsNotColorOrFormOrReset(Type)>
+	template<Concepts::IsColorEd CurMode,
+		Concepts::IsNotColorOrFormOrReset Type>
 	inline std::conditional_t<std::is_lvalue_reference_v<CurMode>, 
 			Mode::Print&, Mode::Print> 
 		operator <<(CurMode&& col, const Type& value)
@@ -153,8 +160,7 @@ namespace SCT::LogColors::Operators
 		return reinterpret_cast<Mode::Print&>(col);
 	}
 
-	template<typename CurMode, typename Type, 
-		enableIfIsPrint(CurMode), enableIfIsColorOrForm(Type)>
+	template<Concepts::IsPrint CurMode, Concepts::IsColorOrForm Type>
 	inline std::conditional_t<std::is_lvalue_reference_v<CurMode>, 
 			Mode::ColorEd&, Mode::ColorEd> 
 		operator <<(CurMode&& col, const Type& p)
@@ -162,34 +168,3 @@ namespace SCT::LogColors::Operators
 		return reinterpret_cast<Mode::ColorEd&>(col) << p;
 	}
 }
-
-#undef enableIfIsNotColorOrFormOrReset
-#undef enableIfIsNotColorOrForm
-#undef enableIfIsColorOrForm
-#undef enableIfIsColor
-#undef isColorOrForm
-
-#undef isColor
-#undef isReset
-
-#undef isBG
-#undef isFG
-#undef isForm
-
-#undef is_256
-#undef is_16
-
-#undef isBG_256
-#undef isFG_256
-#undef isBG_16
-#undef isFG_16
-
-#undef enableIfIsMode
-#undef enableIfIsPrint
-#undef enableIfIsColorEd
-
-#undef isPrint
-#undef isColorEd
-
-#undef isSame
-#undef enableIf

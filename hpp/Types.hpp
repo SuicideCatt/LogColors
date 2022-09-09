@@ -9,8 +9,7 @@ namespace SCT::LogColors
 	using bg = Terminal::BGColors;
 	namespace form = Terminal::Formations;
 
-	using enum Terminal::Reset;
-	using enum Terminal::Delete;
+	using namespace Terminal::Reset;
 
 	using Config = Mode::ColorEd;
 }

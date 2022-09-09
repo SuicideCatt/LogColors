@@ -32,8 +32,8 @@ namespace SCT::LogColors::Terminal
 
 			static const unsigned char id = Id;
 
-			inline operator short int()
-				{ return this->color; }
+			inline operator short int() const
+				{ return color; }
 		};
 
 		template<short int Color, short int Id>
@@ -60,13 +60,16 @@ namespace SCT::LogColors::Terminal
 		};
 	}
 
-	enum Reset
+	namespace Reset
 	{
-		reset
-	};
+		enum Reset
+		{
+			reset
+		};
 
-	enum Delete
-	{
-		off
-	};
+		enum Delete
+		{
+			off
+		};
+	}
 }

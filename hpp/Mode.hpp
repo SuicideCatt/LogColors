@@ -22,30 +22,30 @@ namespace SCT::LogColors::Mode
 
 		inline void invert()
 		{
-			if (this->form[5]) [[unlikely]]
+			if (form[5]) [[unlikely]]
 			{
-				switch (this->mode[0])
+				switch (mode[0])
 				{
 				case _16:
-					if (this->color[0] != 39)
-						this->color[0] = 97 - this->color[0] + 30;
+					if (color[0] != 39)
+						color[0] = 97 - color[0] + 30;
 					break;
 				case _256: // WHY??? WHY NOT.
-						this->color[0] = 255 - this->color[0];
+						color[0] = 255 - color[0];
 					break;
 				
 				default:
 					break;
 				}
 
-				switch (this->mode[1])
+				switch (mode[1])
 				{
 				case _16:
-					if (this->color[1] != 49)
-						this->color[1] = 107 - this->color[1] + 40;
+					if (color[1] != 49)
+						color[1] = 107 - color[1] + 40;
 					break;
 				case _256: // WHY??? WHY NOT.
-						this->color[1] = 255 - this->color[1];
+						color[1] = 255 - color[1];
 					break;
 				
 				default:
@@ -56,12 +56,12 @@ namespace SCT::LogColors::Mode
 
 		inline void reset()
 		{
-			this->color[0] = 39;
-			this->color[1] = 49;
-			std::fill_n(this->mode, 2, _16);
+			color[0] = 39;
+			color[1] = 49;
+			std::fill_n(mode, 2, _16);
 
-			std::fill_n(this->form, 9, false);
-			this->formClear = true;
+			std::fill_n(form, 9, false);
+			formClear = true;
 		}
 	};
 
