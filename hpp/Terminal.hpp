@@ -14,7 +14,7 @@ namespace SCT::LogColors::Terminal
 				blue,						magenta,
 				cyan,						ligftGray,
 				
-				darkGray = Color + 30,		lightRed,
+				darkGray = Color + 60,		lightRed,
 				lightGreen,					lightYellow,
 				lightBlue,					lightMagenta,
 				lightCyan,					white,
