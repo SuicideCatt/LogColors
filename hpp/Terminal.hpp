@@ -30,7 +30,7 @@ namespace SCT::LogColors::Terminal
 		{
 			unsigned char color = 0;
 
-			static const unsigned char id = Id;
+			static constexpr unsigned char id = Id;
 
 			inline operator short int() const
 				{ return color; }
