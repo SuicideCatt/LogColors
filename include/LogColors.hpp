@@ -1,7 +1,10 @@
 #pragma once
 
-#include "hpp/Types.hpp"
-#include "tpp/Operators.tpp"
+#include "Defines.hpp"
+
+#include "Mode.hpp"
+#include "Terminal.hpp"
+#include "tpp/Operators.hpp"
 
 using namespace SCT::LogColors::Operators;
 
