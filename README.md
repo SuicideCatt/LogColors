@@ -2,7 +2,27 @@
 
 Formated text generator for std::ostream. Works on Windows10+ and Linux.
 
-How to use variant 1
+### Install
+Dependents:
+- Git
+- CMake
+- C++ 20
+
+Step 1: Download
+```bash
+git clone https://github.com/SuicideCatt/ArgsP
+cd ArgsP
+mkdir build
+cd build
+```
+
+Step 2: Linux
+```bash
+$ cmake ..
+# make install
+```
+---
+### How to use variant 1
 ```cpp
 #include <LogColors.hpp>
 namespace LC = SCT::LogColors;
@@ -30,7 +50,7 @@ std::cout << LC::fg::lightBlue << LC::bg::yellow << LC::form::bold
 std::cout << LC::off;
 ```
 ---
-How to use variant 2 (Save color and formation configuration)
+### How to use variant 2 (Save color and formation configuration)
 ```cpp
 #include <LogColors.hpp>
 namespace LC = SCT::LogColors;
@@ -52,7 +72,7 @@ conf << "\nBold, Text: " << 5 << LC::reset;
 conf << "\nText: " << 6 << '\n' << LC::off;
 ```
 ---
-Use 256 colors
+### Use 256 colors
 ```cpp
 #include <LogColors.hpp>
 namespace LC = SCT::LogColors;
@@ -71,7 +91,7 @@ std::cout << LC::fg::_256{120} << LC::bg::yellow << LC::form::bold
 		  << "Test text" << LC::off << '\n';
 ```
 ---
-To not use ``SCT::LogColors::ANY``
+### To not use ``SCT::LogColors::ANY``
 ```cpp
 #define USE_SCT_LC
 #include <LogColors.hpp>
