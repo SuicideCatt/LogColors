@@ -10,8 +10,8 @@ Dependents:
 
 Step 1: Download
 ```bash
-git clone https://github.com/SuicideCatt/ArgsP
-cd ArgsP
+git clone https://github.com/SuicideCatt/LogColors
+cd LogColors
 mkdir build
 cd build
 ```
