@@ -31,7 +31,7 @@ namespace SCT::LogColors::Concepts
 	concept IsBG_256 = IsSameRmRef<Type, bg::c256>;
 
 	template<typename Type>
-	concept IsForm = std::same_as<Type, form>;
+	concept IsForm = IsSameRmRef<Type, form>;
 
 	template<typename Type>
 	concept IsFG = IsFG_16<Type> || IsFG_256<Type>;
