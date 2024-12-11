@@ -2,57 +2,93 @@
 
 #include "../Mode.hpp"
 
-#define GenInvertMode(id, cid) \
-	switch (mode[id]) \
-	{ \
-		case _16: \
-			if (color[id] != (39 + cid)) \
-				color[id] = (97 + cid) - color[id] + (30 + cid); \
-			break; \
-		case _256: \
-			color[id] = 255 - color[id]; \
-			break; \
-		default: \
-			break; \
-	}
-
-
 namespace SCT::LogColors::Mode
 {
-	SCT_LC_INL
-	Colored::Colored(std::ostream& out) : out(out) {}
+	SCT_LC_INL Config::Config(std::ostream& out)
+		: out(out), fg_color(fg::reset), bg_color(bg::reset),
+		  form{}, form_clear(true) {}
 
-	SCT_LC_INL
-	void Colored::invert()
+	SCT_LC_INL void Config::try_invert()
 	{
-		if (form[5]) [[unlikely]]
+		if (form[static_cast<uint8_t>(form::invert)]) [[unlikely]]
 		{
-			GenInvertMode(0, 0)
-			GenInvertMode(1, 10)
+			auto invert_color = [](auto& vcolor)
+			{
+				if (vcolor.index())
+				{
+					auto& color = std::get<1>(vcolor).color;
+					color = ~color;
+				}
+				else
+				{
+					auto& color = std::get<0>(vcolor);
+					using E = std::remove_reference_t<decltype(color)>;
+					uint8_t& u8color = reinterpret_cast<uint8_t&>(color);
+
+					if (color != E::reset)
+					{
+						constexpr uint8_t max = static_cast<uint8_t>(E::white);
+						constexpr uint8_t min = static_cast<uint8_t>(E::black);
+
+						u8color = max - u8color + min;
+					}
+				}
+			};
+
+			invert_color(fg_color);
+			invert_color(bg_color);
 		}
 	}
 
-	SCT_LC_INL
-	void Colored::reset_color()
+	SCT_LC_INL void Config::reset()
 	{
-		color[0] = 39;
-		color[1] = 49;
-		std::fill_n(mode, 2, _16);
+		reset_colors();
+		reset_formation();
 	}
 
-	SCT_LC_INL
-	void Colored::reset_formation()
+	SCT_LC_INL void Config::reset_colors()
+	{
+		fg_color = fg::reset;
+		bg_color = bg::reset;
+	}
+
+	SCT_LC_INL void Config::reset_formation()
 	{
 		std::fill_n(form, 9, false);
 		form_clear = true;
 	}
 
-	SCT_LC_INL
-	void Colored::reset()
+	SCT_LC_INL void Config::print_reset()
+		{ out.write("\033[0m", 4); }
+
+	SCT_LC_INL void Printing::print_formation()
 	{
-		reset_color();
-		reset_formation();
+		out.write("\033[0;", 4);
+
+		for (uint16_t i = 0; i < 9 && !form_clear; ++i)
+			if (i != 5 && form[i])
+				out << i + 1 << ';';
+
+		try_invert();
+
+		auto color = [this](auto& color, const char* to_256)
+		{
+			if (color.index()) [[unlikely]]
+			{
+				out.write(to_256, 5);
+				out << static_cast<uint64_t>(std::get<1>(color));
+			}
+			else
+			{
+				out << static_cast<uint64_t>(std::get<0>(color));
+			}
+		};
+
+		color(fg_color, "38;5;");
+		out << ';';
+		color(bg_color, "48;5;");
+		out << 'm';
+
+		try_invert();
 	}
 }
-
-#undef GenInvertMode

@@ -1,44 +1,37 @@
 #pragma once
 
 #include "Mode.hpp"
-#include "Terminal.hpp"
 
 #include <concepts>
 
 namespace SCT::LogColors::Concepts
 {
 	template<typename A, typename B>
-	concept IsSameMode = std::same_as<std::remove_reference_t<A>, B>;
+	concept IsSameRmRef = std::same_as<std::remove_reference_t<A>, B>;
 
 	template<typename Type>
-	concept IsColored = IsSameMode<Type, Mode::Colored>;
+	concept IsModeConfig = IsSameRmRef<Type, Mode::Config>;
 
 	template<typename Type>
-	concept IsPrint = IsSameMode<Type, Mode::Print>;
+	concept IsModePrint = IsSameRmRef<Type, Mode::Printing>;
 
 	template<typename Type>
-	concept IsMode = IsColored<Type> || IsPrint<Type>;
+	concept IsMode = IsModeConfig<Type> || IsModePrint<Type>;
 
 	template<typename Type>
-	concept IsFG_16 = std::same_as<Type, fg::_16>;
+	concept IsFG_16 = IsSameRmRef<Type, fg::c16>;
 
 	template<typename Type>
-	concept IsBG_16 = std::same_as<Type, bg::_16>;
+	concept IsBG_16 = IsSameRmRef<Type, bg::c16>;
 
 	template<typename Type>
-	concept IsFG_256 = std::same_as<Type, fg::_256>;
+	concept IsFG_256 = IsSameRmRef<Type, fg::c256>;
 
 	template<typename Type>
-	concept IsBG_256 = std::same_as<Type, bg::_256>;
+	concept IsBG_256 = IsSameRmRef<Type, bg::c256>;
 
 	template<typename Type>
-	concept Is_16 = IsFG_16<Type> || IsBG_16<Type>;
-
-	template<typename Type>
-	concept Is_256 = IsFG_256<Type> || IsBG_256<Type>;
-
-	template<typename Type>
-	concept IsForm = std::same_as<Type, form::t>;
+	concept IsForm = std::same_as<Type, form>;
 
 	template<typename Type>
 	concept IsFG = IsFG_16<Type> || IsFG_256<Type>;
@@ -50,11 +43,11 @@ namespace SCT::LogColors::Concepts
 	concept IsColor = IsFG<Type> || IsBG<Type>;
 
 	template<typename Type>
-	concept IsReset =
-		std::same_as<Type, Reset> || std::same_as<Type, Disable>;
+	concept IsColorOrForm = IsColor<Type> || IsForm<Type>;
 
 	template<typename Type>
-	concept IsColorOrForm = IsColor<Type> || IsForm<Type>;
+	concept IsReset = IsSameRmRef<Type, DarkSide::Reset>
+					  || IsSameRmRef<Type, DarkSide::Disable>;
 
 	template<typename Type>
 	concept IsNotColorOrFormOrReset =

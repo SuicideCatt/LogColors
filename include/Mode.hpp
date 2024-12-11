@@ -1,43 +1,40 @@
 #pragma once
 
-#include "Defines.hpp"
+#include "Terminal.hpp"
 
-#include <cstdint>
 #include <ostream>
-#include <algorithm>
+#include <variant>
 
 namespace SCT::LogColors::Mode
 {
-	struct Colored
+	struct Config
 	{
-		enum Mode : char
-		{
-			_16, _256
-		};
+		template<typename T>
+		using Color = std::variant<typename T::c16, typename T::c256>;
+
+		SCT_LC_INL Config(std::ostream& out);
+
+		SCT_LC_INL void try_invert();
+
+		SCT_LC_INL void reset();
+		SCT_LC_INL void reset_colors();
+		SCT_LC_INL void reset_formation();
+
+		SCT_LC_INL void print_reset();
 
 		std::ostream& out;
 
-		uint16_t color[2] = {39, 49};
-		Mode mode[2] = {_16, _16};
+		Color<fg> fg_color;
+		Color<bg> bg_color;
 
-		bool form[9] = {};
-		bool form_clear = true;
-
-		SCT_LC_INL
-		Colored(std::ostream& out);
-
-		SCT_LC_INL
-		void invert();
-
-		SCT_LC_INL
-		void reset_color();
-		SCT_LC_INL
-		void reset_formation();
-		SCT_LC_INL
-		void reset();
+		bool form[9];
+		bool form_clear;
 	};
 
-	struct Print : public Colored {};
+	struct Printing : Config
+	{
+		SCT_LC_INL void print_formation();
+	};
 }
 
 #include "ipp/Mode.hpp"

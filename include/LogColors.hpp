@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Defines.hpp"
-
 #include "Mode.hpp"
 #include "Terminal.hpp"
 #include "tpp/Operators.hpp"

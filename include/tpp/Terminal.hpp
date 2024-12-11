@@ -4,15 +4,11 @@
 
 namespace SCT::LogColors::DarkSide
 {
-	void error(const char*);
+	template<typename Type>
+	SCT_LC_INL consteval _256_t<Type>::_256_t(uint8_t value)
+		: color(value) {}
 
-	template<uint16_t Id>
-	SCT_LC_INL consteval _256_t<Id>::_256_t(uint16_t value) : color(value)
-	{
-		if (value > 255) error("Dude, color value more than 255");
-	}
-
-	template<uint16_t Id>
-	SCT_LC_INL _256_t<Id>::operator uint16_t()
+	template<typename Type>
+	SCT_LC_INL _256_t<Type>::operator uint8_t()
 		{ return color; }
 }
