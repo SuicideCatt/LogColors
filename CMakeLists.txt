@@ -10,8 +10,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(TESTS)
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 	add_executable(test tests/main.cpp)
-	target_include_directories(test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+	add_executable(for_readme tests/for_readme.cpp)
 endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
