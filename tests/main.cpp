@@ -31,10 +31,10 @@ void test_color16()
 template<typename Colors>
 void test_color256()
 {
-	for (uint8_t c = 0; c < 255; ++c)
+	for (uint16_t c = 0; c < 256; ++c)
 	{
 		std::stringstream ss;
-		ss << reinterpret_cast<Colors::c256&>(c) << "Text" << LC::off;
+		ss << typename Colors::c256(c) << "Text" << LC::off;
 		print_val(ss.str());
 	}
 }
