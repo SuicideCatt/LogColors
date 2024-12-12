@@ -30,7 +30,7 @@ namespace SCT::LogColors
 		template<typename Type>
 		struct _256_t
 		{
-			SCT_LC_INL consteval _256_t(uint8_t value);
+			SCT_LC_INL _256_t(uint8_t value);
 
 			SCT_LC_INL operator uint8_t();
 
