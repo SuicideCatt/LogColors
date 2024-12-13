@@ -2,10 +2,6 @@
 
 Colored and formated text generator for std::ostream on C++20.
 
-Supported colors palette:
-- 16 colors
-- 256 colors
-
 ## Usage
 ```cpp
 #define USE_SCT_LC
@@ -18,6 +14,14 @@ using LC::form;
 std::cout << fg::blue << form::bold << "Blue bold text!" << LC::off << '\n';
 std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '\n';
 ```
+
+## Supported colors
+- 16 colors
+	
+	![16 colors exemple](img/16_colors.png)
+- 256 colors
+	
+	![256 colors exemple](img/256_colors.png)
 
 ## TODO
 - [ ] RGB colors palette

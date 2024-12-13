@@ -38,9 +38,10 @@ std::string_view to_string(Colors color)
 	LAZY_CASE(light_magenta);
 	LAZY_CASE(light_cyan);
 	LAZY_CASE(white);
+	
+	default:
+		return "";
 	}
-
-	return "";
 }
 
 template<typename Colors, uint8_t offset>
