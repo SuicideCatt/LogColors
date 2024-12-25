@@ -1,0 +1,59 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  debian-12.8-gcc:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:12.8
+    steps:
+      - name: 'Update apt data'
+        run: apt update -y
+      - name: 'Install nodejs and git'
+        run: apt install nodejs git -y
+      - name: 'Set up source'
+        uses: actions/checkout@v3
+      - name: 'Install CMake, Make and GCC(for C++)'
+        run: apt install g++ cmake make -y
+      - name: 'Set up build'
+        run: mkdir build && cmake -S . -B build -G "Unix Makefiles" -DTESTS=ON -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+      - name: 'Try build'
+        run: cd build && make -j$(nproc)
+      - name: 'Install Python and Quom'
+        run: apt install python3 python3-pip -y && pip install --user quom --break-system
+      - name: 'Generate one header'
+        run: ./gen_one_header.sh LogColors $(git remote get-url origin) ./build/LogColors.hpp
+      - name: 'Set up Debian package'
+        run: "cd build && mkdir -p debpkg/DEBIAN && sed \"s/Version: __PASTE_VERSION__/Version: $(cmake --system-information | awk -F= '$1~/PROJECT_VERSION:STATIC/{print$2}')/g\" ../debian > ./debpkg/DEBIAN/control"
+      - name: 'Create Debian package'
+        run: cd build && make DESTDIR=debpkg install && dpkg-deb --build debpkg
+      - name: 'Create release'
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: 'Upload C++ header'
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/LogColors.hpp
+          asset_name: LogColors.hpp
+      - name: 'Upload Debian package'
+        uses: shogo82148/actions-upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/debpkg.deb
+          asset_name: LogColors.deb
