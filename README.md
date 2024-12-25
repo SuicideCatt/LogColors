@@ -15,6 +15,15 @@ std::cout << fg::blue << form::bold << "Blue bold text!" << LC::off << '\n';
 std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '\n';
 ```
 
+## Download or Install
+- [You can download one header version!](https://github.com/SuicideCatt/LogColors/releases/latest)
+- Debian package available on [releases](https://github.com/SuicideCatt/LogColors/releases/latest)
+
+	```bash
+	$ curl -o LogColors.deb -L $URL
+	# dpkg -i LogColors.deb 
+	```
+
 ## Supported colors
 - 16 colors
 	
