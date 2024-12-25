@@ -23,6 +23,11 @@ std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '
 	$ curl -o LogColors.deb -L $URL
 	# dpkg -i LogColors.deb 
 	```
+- ArchLinux package available on [AUR](https://aur.archlinux.org/packages/sct_logcolors)
+
+	```bash
+	$ yay -S sct_logcolors
+	```
 
 ## Supported colors
 - 16 colors
@@ -36,4 +41,4 @@ std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '
 - [ ] RGB colors palette
 - [ ] Add std::wostream support
 - [ ] Add RPM package
-- [ ] Add Arch package
+- [x] Add Arch package
