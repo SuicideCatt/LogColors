@@ -7,6 +7,7 @@ on:
 
 jobs:
   debian-12-8-gcc:
+    permissions: write-all
     runs-on: ubuntu-latest
     container:
       image: debian:12.8
@@ -26,7 +27,7 @@ jobs:
       - name: 'Install Python and Quom'
         run: apt install python3 python3-pip -y && pip install --user quom --break-system
       - name: 'Generate one header'
-        run: ./gen_one_header.sh LogColors $(git remote get-url origin) ./build/LogColors.hpp
+        run: ./gen_one_header.sh LogColors ${{ github.server_url }}/${{ github.repository }} ./build/LogColors.hpp
       - name: 'Set up Debian package'
         run: "cd build && mkdir -p debpkg/DEBIAN && sed \"s/Version: __PASTE_VERSION__/Version: $(cmake --system-information | awk -F= '$1~/PROJECT_VERSION:STATIC/{print$2}')/g\" ../debian > ./debpkg/DEBIAN/control"
       - name: 'Create Debian package'
