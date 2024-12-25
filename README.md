@@ -26,3 +26,5 @@ std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '
 ## TODO
 - [ ] RGB colors palette
 - [ ] Add std::wostream support
+- [ ] Add RPM package
+- [ ] Add Arch package
