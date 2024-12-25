@@ -2,7 +2,7 @@ Package: LogColors
 Version: __PASTE_VERSION__
 Section: libdevel
 Priority: optional
-Architecture: any
+Architecture: all
 Essential: no
 Maintainer: SuicideCatt <random.cat.from.internet@gmail.com>
 Description: Colored and formated text generator for std::ostream on C++20.
