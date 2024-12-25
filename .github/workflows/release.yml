@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  debian-12.8-gcc:
+  debian-12-8-gcc:
     runs-on: ubuntu-latest
     container:
       image: debian:12.8
