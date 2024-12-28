@@ -54,14 +54,14 @@ void test_just_text()
 {
 	std::stringstream ss;
 
-	// Line 1 - all text is white and bold
-	// Line 2 - 1 white and italic word on black bg,
-	//			twise form::bold for dissable
-	// Line 3 - reset all settings, print word, dissable
+	// Line 1 - All text is white and bold.
+	// Line 2 - One white, italic word on a black background.
+	//          Apply bold formatting twice (to disable it).
+	// Line 3 - Reset all styles, print a word, then disable formatting.
 
-	ss << LC::form::bold << LC::fg::white << "White text on "
-	   << LC::form::italic << LC::form::bold << LC::bg::black << "black"
-	   << LC::reset << " background" << LC::off;
+	ss << LC::form::bold << LC::fg::white << "White text on " // L1
+	   << LC::form::italic << LC::form::bold << LC::bg::black << "black" // L2
+	   << LC::reset << " background" << LC::off; // L3
 
 	print_val(ss.str());
 }
