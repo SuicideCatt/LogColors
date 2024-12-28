@@ -12,7 +12,7 @@ using LC::fg;
 using LC::bg;
 using LC::form;
 std::cout << fg::blue << form::bold << "Blue bold text!" << LC::off << '\n';
-std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '\n';
+std::cout << bg::yellow << form::italic << "Italic text on yellow background!" << LC::off << '\n';
 ```
 
 ## Download or Install
@@ -21,7 +21,7 @@ std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '
 
 	```bash
 	$ curl -o LogColors.deb -L $URL
-	# dpkg -i LogColors.deb 
+	# dpkg -i LogColors.deb
 	```
 - ArchLinux package available on [AUR](https://aur.archlinux.org/packages/sct_logcolors)
 
@@ -31,14 +31,14 @@ std::cout << bg::yellow << form::italic << "Yellow italic text!" << LC::off << '
 
 ## Supported colors
 - 16 colors
-	
+
 	![16 colors exemple](img/16_colors.png)
 - 256 colors
-	
+
 	![256 colors exemple](img/256_colors.png)
 
 ## TODO
-- [ ] RGB colors palette
+- [ ] Add RGB colors
 - [ ] Add std::wostream support
 - [ ] Add RPM package
 - [x] Add Arch package
