@@ -39,6 +39,23 @@ void test_color256()
 	}
 }
 
+template<typename Colors>
+void test_color_rgb()
+{
+	auto p = [](uint8_t r, uint8_t g, uint8_t b)
+	{
+		std::stringstream ss;
+		ss << typename Colors::rgb(r, g, b) << "Text" << LC::off;
+		print_val(ss.str());
+	};
+
+	p(255, 255, 255);	// white;
+	p(255, 0, 0);		// red;
+	p(0, 255, 0);		// green;
+	p(0, 0, 255);		// blue;
+	p(0, 0, 0);			// black;
+}
+
 template<LC::Concepts::IsFG fg_t, LC::Concepts::IsBG bg_t>
 void test_formation(fg_t fg, bg_t bg)
 {
@@ -82,6 +99,13 @@ int main()
 	test_color256<LC::fg>();
 	std::cout << "Test bg 256 colors\n";
 	test_color256<LC::bg>();
+
+	std::cout << "\n\n";
+
+	std::cout << "Test fg rgb colors\n";
+	test_color_rgb<LC::fg>();
+	std::cout << "Test bg rgb colors\n";
+	test_color_rgb<LC::bg>();
 
 	std::cout << "\n\n";
 

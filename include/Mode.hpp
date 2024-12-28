@@ -10,7 +10,8 @@ namespace SCT::LogColors::Mode
 	struct Config
 	{
 		template<typename T>
-		using Color = std::variant<typename T::c16, typename T::c256>;
+		using Color = std::variant<typename T::c16, typename T::c256,
+								   typename T::rgb>;
 
 		SCT_LC_INL Config(std::ostream& out);
 

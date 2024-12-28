@@ -37,10 +37,20 @@ namespace SCT::LogColors
 			uint8_t color = 0;
 		};
 
+		template<typename Type>
+		struct rgb_t
+		{
+			SCT_LC_INL rgb_t(uint8_t all = 255);
+			SCT_LC_INL rgb_t(uint8_t r, uint8_t g, uint8_t b);
+
+			uint8_t r, g, b;
+		};
+
 		template<uint8_t Color>
 		struct Colors : _16_t<Color>
 		{
 			using c256 = _256_t<_16_t<Color>>;
+			using rgb = rgb_t<_16_t<Color>>;
 		};
 
 		enum class Reset

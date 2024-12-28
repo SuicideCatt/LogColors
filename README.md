@@ -13,6 +13,8 @@ using LC::bg;
 using LC::form;
 std::cout << fg::blue << form::bold << "Blue bold text!" << LC::off << '\n';
 std::cout << bg::yellow << form::italic << "Italic text on yellow background!" << LC::off << '\n';
+
+std::cout << fg::rgb(255) << bg::rgb(255, 192, 203) << "White text on pink background!" << LC::off << '\n';
 ```
 
 ## Download or Install
@@ -36,9 +38,10 @@ std::cout << bg::yellow << form::italic << "Italic text on yellow background!" <
 - 256 colors
 
 	![256 colors exemple](img/256_colors.png)
+- RGB colors
 
 ## TODO
-- [ ] Add RGB colors
+- [x] Add RGB colors
 - [ ] Add std::wostream support
 - [ ] Add RPM package
 - [x] Add Arch package

@@ -31,13 +31,19 @@ namespace SCT::LogColors::Concepts
 	concept IsBG_256 = IsSameRmRef<Type, bg::c256>;
 
 	template<typename Type>
+	concept IsFG_RGB = IsSameRmRef<Type, fg::rgb>;
+
+	template<typename Type>
+	concept IsBG_RGB = IsSameRmRef<Type, bg::rgb>;
+
+	template<typename Type>
 	concept IsForm = IsSameRmRef<Type, form>;
 
 	template<typename Type>
-	concept IsFG = IsFG_16<Type> || IsFG_256<Type>;
+	concept IsFG = IsFG_16<Type> || IsFG_256<Type> || IsFG_RGB<Type>;
 
 	template<typename Type>
-	concept IsBG = IsBG_16<Type> || IsBG_256<Type>;
+	concept IsBG = IsBG_16<Type> || IsBG_256<Type> || IsBG_RGB<Type>;
 
 	template<typename Type>
 	concept IsColor = IsFG<Type> || IsBG<Type>;

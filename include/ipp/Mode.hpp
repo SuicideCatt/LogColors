@@ -14,24 +14,39 @@ namespace SCT::LogColors::Mode
 		{
 			auto invert_color = [](auto& vcolor)
 			{
-				if (vcolor.index())
+				switch (vcolor.index())
 				{
-					auto& color = std::get<1>(vcolor).color;
-					color = ~color;
-				}
-				else
-				{
-					auto& color = std::get<0>(vcolor);
-					using E = std::remove_reference_t<decltype(color)>;
-					uint8_t& u8color = reinterpret_cast<uint8_t&>(color);
-
-					if (color != E::reset)
+				case 0:
 					{
-						constexpr uint8_t max = static_cast<uint8_t>(E::white);
-						constexpr uint8_t min = static_cast<uint8_t>(E::black);
+						auto& color = std::get<0>(vcolor);
+						using E = std::remove_reference_t<decltype(color)>;
+						uint8_t& u8color = reinterpret_cast<uint8_t&>(color);
 
-						u8color = max - u8color + min;
+						if (color != E::reset)
+						{
+							constexpr uint8_t max =
+								static_cast<uint8_t>(E::white);
+							constexpr uint8_t min =
+								static_cast<uint8_t>(E::black);
+
+							u8color = max - u8color + min;
+						}
 					}
+					break;
+				case 1:
+					{
+						auto& color = std::get<1>(vcolor).color;
+						color = ~color;
+					}
+					break;
+				case 2:
+					{
+						auto& [r, g, b] = std::get<2>(vcolor);
+						r = ~r;
+						g = ~g;
+						b = ~b;
+					}
+					break;
 				}
 			};
 
@@ -71,22 +86,32 @@ namespace SCT::LogColors::Mode
 
 		try_invert();
 
-		auto color = [this](auto& color, const char* to_256)
+		auto color = [this](auto& color, const char* to_256, const char* to_rgb)
 		{
-			if (color.index()) [[unlikely]]
+			switch (color.index())
 			{
+			case 0:
+				out << static_cast<uint64_t>(std::get<0>(color));
+				break;
+			[[unlikely]] case 1:
 				out.write(to_256, 5);
 				out << static_cast<uint64_t>(std::get<1>(color));
-			}
-			else
-			{
-				out << static_cast<uint64_t>(std::get<0>(color));
+				break;
+			[[unlikely]] case 2:
+				{
+					out.write(to_rgb, 5);
+					auto& [r, g, b] = std::get<2>(color);
+					out << static_cast<uint64_t>(r) << ';';
+					out << static_cast<uint64_t>(g) << ';';
+					out << static_cast<uint64_t>(b);
+				}
+				break;
 			}
 		};
 
-		color(fg_color, "38;5;");
+		color(fg_color, "38;5;", "38;2;");
 		out << ';';
-		color(bg_color, "48;5;");
+		color(bg_color, "48;5;", "48;2;");
 		out << 'm';
 
 		try_invert();
